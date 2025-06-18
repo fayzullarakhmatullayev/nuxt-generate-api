@@ -293,7 +293,7 @@ function generateTypedFetchCall(endpoint, method, pathParams, hasQuery, hasBody,
   const pathWithParams =
     pathParams.length > 0 ? endpoint.replace(/\{([^}]+)\}/g, '${params.$1}') : endpoint;
 
-  let fetchCall = `return await useApiService<ApiTypes.${typeName}Response>(\`${pathWithParams}\`, {\n    method: '${method.toUpperCase()}'`;
+  let fetchCall = `return await useApiService<ApiTypes.${typeName}Response>(\`${pathWithParams}\`, {\n      method: '${method.toUpperCase()}'`;
 
   if (hasQuery) {
     fetchCall += ',\n      query: params.query';
