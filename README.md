@@ -119,4 +119,4 @@ MIT
 Created by [Fayzulla Rahmatullayev](https://github.com/fayzullarhmatullayev)  
 Inspired by `openapi-typescript`, `swagger-typescript-api`, and `Nuxt` DX best practices.
 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fayzullarhmatullayev/nuxt-generate-api)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fayzullarakhmatullayev/nuxt-generate-api)
