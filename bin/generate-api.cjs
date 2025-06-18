@@ -8,7 +8,7 @@ const path = require('path');
 const LOCAL_SWAGGER_FILE = './swagger.json';
 
 function generateTypes(components, paths) {
-  let types = `// Generated TypeScript types for BNR API
+  let types = `// Generated TypeScript types for Your API
 // Generated at: ${new Date().toISOString()}
 
 `;
@@ -153,7 +153,7 @@ function generateResponseType(spec, typeName, components) {
 }
 
 // Generate composables/useApiService.ts
-const useApiServiceContent = `// Generated utility composable for BNR API
+const useApiServiceContent = `// Generated utility composable for Your API
 
 type Methods =
   | "GET"
@@ -215,7 +215,7 @@ export async function useApiService<T>(
 `;
 
 function generateComposable(paths) {
-  let composableContent = `// Generated API composables for BNR API
+  let composableContent = `// Generated API composables for Your API
 // Generated from: Local swagger.json file
 // Generated at: ${new Date().toISOString()}
 
@@ -223,7 +223,7 @@ import type * as ApiTypes from '../types/api.types'
 
 export const useApi = () => {
   const config = useRuntimeConfig()
-  const baseURL = config.public.apiUrl || 'https://bnr.dx.unicon.uz'
+  const baseURL = config.public.apiUrl
 
 `;
 
