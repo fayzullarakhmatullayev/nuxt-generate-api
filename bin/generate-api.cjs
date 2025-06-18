@@ -181,7 +181,7 @@ export async function useApiService<T>(
     method?: Methods;
     query?: Record<string, any>;
     body?: any;
-    headers?: HeadersInit;
+    headers?: HeadersInit & { Authorization?: string; 'Accept-Language'?: string };
     baseURL?: string;
     parseResponse?: boolean;
   } = {}

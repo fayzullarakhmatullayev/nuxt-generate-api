@@ -1,6 +1,6 @@
 {
   "name": "nuxt-generate-api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "bin": {
     "nuxt-generate-api": "./bin/generate-api.cjs"
   },
