@@ -1,0 +1,20 @@
+{
+  "name": "nuxt-generate-api",
+  "version": "1.0.0",
+  "bin": {
+    "nuxt-generate-api": "./bin/generate-api.cjs"
+  },
+  "type": "commonjs",
+  "main": "bin/generate-api.cjs",
+  "description": "Generates composables and types from swagger.json",
+  "keywords": [
+    "swagger",
+    "typescript",
+    "nuxt",
+    "api",
+    "generator"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {}
+}
