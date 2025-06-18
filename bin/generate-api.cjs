@@ -190,8 +190,8 @@ export async function useApiService<T>(
 
   const {
     method = "GET",
-    query,
     body,
+    query = {},
     headers = {},
     baseURL = config.public.apiUrl as string,
     parseResponse = true
