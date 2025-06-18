@@ -392,7 +392,7 @@ function main() {
     if (!fs.existsSync(LOCAL_SWAGGER_FILE)) {
       console.error(`❌ ${LOCAL_SWAGGER_FILE} not found!`);
       console.log('\n💡 How to get the swagger.json file:');
-      console.log('1. Visit https://bnr.dx.unicon.uz/api/swagger/ in your browser');
+      console.log('1. Visit https://your-api-url/api/swagger/ in your browser');
       console.log('2. Open browser developer tools (F12)');
       console.log('3. Go to Network tab');
       console.log('4. Refresh the page');
