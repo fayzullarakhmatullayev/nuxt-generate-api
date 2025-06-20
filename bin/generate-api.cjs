@@ -208,7 +208,7 @@ export async function useApiService<T>(
 
     return parseResponse ? result : (result as unknown as T);
   } catch (err: any) {
-    console.error(\`[❌ useFetch] \${method} \${url}\`, err);
+    console.error(\`[❌ useApiService] \${method} \${url}\`, err);
     throw err;
   }
 }
@@ -232,14 +232,15 @@ export const useApi = () => {
       const functionName = camelCase(operationId);
       const typeName = pascalCase(operationId);
 
-      const { params, pathParams, hasQuery, hasBody } = analyzeFunctionParams(spec);
+      const { params, pathParams, hasQuery, hasBody, hasAnyParams } = analyzeFunctionParams(spec);
       const fetchCall = generateTypedFetchCall(
         endpoint,
         method,
         pathParams,
         hasQuery,
         hasBody,
-        typeName
+        typeName,
+        hasAnyParams
       );
 
       composableContent += `  // ${
@@ -277,30 +278,55 @@ function analyzeFunctionParams(spec) {
   const operationId = spec.operationId || 'Operation';
   const typeName = pascalCase(operationId);
 
-  if (pathParams.length === 0 && !hasQuery && !hasBody) {
-    return { params: '', pathParams, hasQuery, hasBody };
+  const hasAnyParams = pathParams.length > 0 || hasQuery || hasBody;
+
+  if (!hasAnyParams) {
+    return { params: '', pathParams, hasQuery, hasBody, hasAnyParams };
   }
 
+  // Check if all parameters are optional
+  const requiredPathParams = pathParams.filter((p) => p.required !== false);
+  const requiredQueryParams = queryParams.filter((p) => p.required === true);
+  const requiredBody = hasBody && spec.requestBody?.required !== false;
+
+  const hasRequiredParams =
+    requiredPathParams.length > 0 || requiredQueryParams.length > 0 || requiredBody;
+
   return {
-    params: `params: ApiTypes.${typeName}Request`,
+    params: hasRequiredParams
+      ? `params: ApiTypes.${typeName}Request`
+      : `params?: ApiTypes.${typeName}Request`,
     pathParams,
     hasQuery,
-    hasBody
+    hasBody,
+    hasAnyParams
   };
 }
 
-function generateTypedFetchCall(endpoint, method, pathParams, hasQuery, hasBody, typeName) {
+function generateTypedFetchCall(
+  endpoint,
+  method,
+  pathParams,
+  hasQuery,
+  hasBody,
+  typeName,
+  hasAnyParams
+) {
   const pathWithParams =
     pathParams.length > 0 ? endpoint.replace(/\{([^}]+)\}/g, '${params.$1}') : endpoint;
+
+  if (!hasAnyParams) {
+    return `return await useApiService<ApiTypes.${typeName}Response>(\`${pathWithParams}\`, {\n      method: '${method.toUpperCase()}'\n    })`;
+  }
 
   let fetchCall = `return await useApiService<ApiTypes.${typeName}Response>(\`${pathWithParams}\`, {\n      method: '${method.toUpperCase()}'`;
 
   if (hasQuery) {
-    fetchCall += ',\n      query: params.query';
+    fetchCall += ',\n      query: params?.query';
   }
 
   if (hasBody) {
-    fetchCall += ',\n      body: params.body';
+    fetchCall += ',\n      body: params?.body';
   }
 
   fetchCall += '\n    })';
@@ -368,6 +394,19 @@ function getTypeFromSchema(schema, allSchemas = {}) {
 }
 
 function camelCase(str) {
+  const isSnakeCase = str.includes('_');
+
+  if (isSnakeCase) {
+    return str
+      .toLowerCase()
+      .split('_')
+      .map((word, index) => {
+        if (index === 0) return word;
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join('');
+  }
+
   return str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
       return index === 0 ? word.toLowerCase() : word.toUpperCase();
