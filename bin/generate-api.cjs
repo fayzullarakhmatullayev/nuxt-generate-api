@@ -465,11 +465,16 @@ function main() {
     }
     fs.writeFileSync(path.join(typesDir, 'api.types.ts'), typesOutput);
 
-    fs.writeFileSync(path.join(outputDir, 'useApiService.ts'), useApiServiceContent);
+    const serviceFilePath = path.join(outputDir, 'useApiService.ts');
 
-    console.log(
-      '✅ API service composable generated successfully at ./composables/useApiService.ts'
-    );
+    if (fs.existsSync(serviceFilePath)) {
+      console.log('⚠️  Skipped generating useApiService.ts — file already exists.');
+    } else {
+      fs.writeFileSync(serviceFilePath, useApiServiceContent);
+      console.log(
+        '✅ API service composable generated successfully at ./composables/useApiService.ts'
+      );
+    }
     console.log('✅ API types generated successfully at ./types/api.types.ts');
     console.log('✅ API composable generated successfully at ./composables/useApi.ts');
   } catch (error) {
