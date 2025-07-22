@@ -337,6 +337,11 @@ function generateTypedFetchCall(
 function getRequestBodyType(requestBody) {
   if (!requestBody.content) return 'any';
 
+  const multipartContent = requestBody.content['multipart/form-data'];
+  if (multipartContent && multipartContent.schema) {
+    return getTypeFromSchema(multipartContent.schema);
+  }
+
   const jsonContent = requestBody.content['application/json'];
   if (!jsonContent || !jsonContent.schema) return 'any';
 
