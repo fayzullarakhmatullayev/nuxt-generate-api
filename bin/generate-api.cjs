@@ -9,7 +9,6 @@ const LOCAL_SWAGGER_FILE = './swagger.json';
 
 function generateTypes(components, paths) {
   let types = `// Generated TypeScript types for Your API
-// Generated at: ${new Date().toISOString()}
 
 `;
 
@@ -217,7 +216,6 @@ export async function useApiService<T>(
 function generateComposable(paths) {
   let composableContent = `// Generated API composables for Your API
 // Generated from: Local swagger.json file
-// Generated at: ${new Date().toISOString()}
 
 import type * as ApiTypes from '../types/api.types'
 
