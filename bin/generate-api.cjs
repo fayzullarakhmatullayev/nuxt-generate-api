@@ -454,7 +454,7 @@ function main() {
     );
 
     // Write to file
-    const outputDir = './composables';
+    const outputDir = './app/composables';
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
@@ -462,7 +462,7 @@ function main() {
     fs.writeFileSync(path.join(outputDir, 'useApi.ts'), composableContent);
 
     const typesOutput = generateTypes(swaggerSpec.components || {}, swaggerSpec.paths || {});
-    const typesDir = './types';
+    const typesDir = './app/types';
     if (!fs.existsSync(typesDir)) {
       fs.mkdirSync(typesDir, { recursive: true });
     }
